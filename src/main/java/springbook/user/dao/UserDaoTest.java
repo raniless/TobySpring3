@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import springbook.user.domain.User;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -34,7 +35,7 @@ public class UserDaoTest {
         this.user3 = new User("bumjin"  , "박범진", "springno3");
     }
 
-    @Test
+//    @Test
     public void addAndGet() throws SQLException {
         dao.deleteAll();
         assertEquals(0, dao.getCount());
@@ -52,7 +53,7 @@ public class UserDaoTest {
         assertEquals(userGet2.getPassword(), user2.getPassword());
     }
 
-    @Test
+//    @Test
     public void count() throws SQLException {
         dao.deleteAll();
         assertEquals(0, dao.getCount());
@@ -67,11 +68,40 @@ public class UserDaoTest {
         assertEquals(3, dao.getCount());
     }
 
-    @Test(expected = EmptyResultDataAccessException.class)
+//    @Test(expected = EmptyResultDataAccessException.class)
     public void getUserFailure() throws SQLException {
         dao.deleteAll();
         assertEquals(0, dao.getCount());
 
         dao.get("unknown_id");
+    }
+
+    @Test
+    public void getAll() throws SQLException {
+        dao.deleteAll();
+
+        dao.add(user1);
+        List<User> users1 = dao.getAll();
+        assertEquals(1, users1.size());
+        checkSameUser(user1, users1.get(0));
+
+        dao.add(user2);
+        List<User> users2 = dao.getAll();
+        assertEquals(2, users2.size());
+        checkSameUser(user1, users2.get(0));
+        checkSameUser(user2, users2.get(1));
+
+        dao.add(user3);
+        List<User> users3 = dao.getAll();
+        assertEquals(3, users3.size());
+        checkSameUser(user3, users3.get(0));
+        checkSameUser(user1, users3.get(1));
+        checkSameUser(user2, users3.get(2));
+    }
+
+    private void checkSameUser(User user1, User user2){
+        assertEquals(user2.getId(), user1.getId());
+        assertEquals(user2.getName(), user1.getName());
+        assertEquals(user2.getPassword(), user1.getPassword());
     }
 }
