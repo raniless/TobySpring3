@@ -26,6 +26,27 @@ public class UserServiceTest {
     UserDao userDao;
     List<User> users;
 
+    static class TestUserService extends UserService {
+        private String id;
+
+        private TestUserService(String id){
+            this.id = id;
+        }
+
+        @Override
+        protected void upgradeLevel(User user) {
+            if(user.getId().equals(this.id)){
+                throw new TestUserServiceException();
+            }
+
+            super.upgradeLevel(user);
+        }
+    }
+
+    static class TestUserServiceException extends RuntimeException {
+
+    }
+
     @Before
     public void setUp(){
         users = Arrays.asList(
@@ -42,7 +63,7 @@ public class UserServiceTest {
         assertNotEquals(null, this.userService);
     }
 
-    @Test
+//    @Test
     public void upgradeLevels(){
         userDao.deleteAll();
 
@@ -86,5 +107,26 @@ public class UserServiceTest {
 
         assertEquals(userWithLevel.getLevel(), userWithLevelRead.getLevel());
         assertEquals(Level.BASIC, userWithoutLevelRead.getLevel());
+    }
+
+    @Test
+    public void upgradeAllOrNothing(){
+        UserService testUserService = new TestUserService(users.get(3).getId());
+        testUserService.setUserDao(this.userDao);
+
+        userDao.deleteAll();
+
+        for(User user : users){
+            userDao.add(user);
+        }
+
+        try {
+            testUserService.upgradeLevels();
+            fail("TestUserServiceException expected");
+        }catch(TestUserServiceException e){
+
+        }
+
+        checkLevelUpgrade(users.get(1), false);
     }
 }
