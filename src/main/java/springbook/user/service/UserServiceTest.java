@@ -38,7 +38,7 @@ public class UserServiceTest {
 
     List<User> users;
 
-    static class TestUserServiceImpl extends UserServiceImpl {
+    static class TestUserService extends UserServiceImpl {
         private String id = "madnite1";
 
         @Override
@@ -204,4 +204,8 @@ public class UserServiceTest {
 
         checkLevelUpgrade(users.get(1), false);
     }
+//    @Test
+//    public void advisorAutoProxyCreator(){
+//        assertEquals(java.lang.reflect.Proxy.class, testUserService.getClass());
+//    }
 }
