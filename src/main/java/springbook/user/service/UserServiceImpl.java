@@ -2,12 +2,14 @@ package springbook.user.service;
 
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.transaction.annotation.Transactional;
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
 
 import java.util.List;
 
+@Transactional
 public class UserServiceImpl implements UserService {
     public static final int MIN_LOGCOUNT_FOR_SILVER = 50;
     public static final int MIN_RECOMMEND_FOR_GOLD = 30;
@@ -23,6 +25,7 @@ public class UserServiceImpl implements UserService {
         this.mailSender = mailSender;
     }
 
+    @Override
     public void add(User user){
         if(user.getLevel() == null){
             user.setLevel(Level.BASIC);
@@ -31,6 +34,27 @@ public class UserServiceImpl implements UserService {
         userDao.add(user);
     }
 
+    @Override
+    public User get(String id) {
+        return userDao.get(id);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return userDao.getAll();
+    }
+
+    @Override
+    public void deleteAll() {
+        userDao.deleteAll();
+    }
+
+    @Override
+    public void update(User user) {
+        userDao.update(user);
+    }
+
+    @Override
     public void upgradeLevels() {
         List<User> users = userDao.getAll();
 
