@@ -7,10 +7,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
 
@@ -22,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/test-applicationContext.xml")
+@Transactional
 public class UserDaoTest {
     @Autowired
     private UserDao dao;
@@ -39,7 +42,7 @@ public class UserDaoTest {
         this.user3 = new User("bumjin"  , "박범진", "springno3", Level.GOLD, 100, 40, "bumjin@email.com");
     }
 
-//    @Test
+    @Test
     public void addAndGet() {
         dao.deleteAll();
         assertEquals(0, dao.getCount());
@@ -55,7 +58,7 @@ public class UserDaoTest {
         checkSameUser(userGet2, user2);
     }
 
-//    @Test
+    @Test
     public void count() {
         dao.deleteAll();
         assertEquals(0, dao.getCount());
@@ -70,7 +73,7 @@ public class UserDaoTest {
         assertEquals(3, dao.getCount());
     }
 
-//    @Test(expected = EmptyResultDataAccessException.class)
+    @Test(expected = EmptyResultDataAccessException.class)
     public void getUserFailure() {
         dao.deleteAll();
         assertEquals(0, dao.getCount());
@@ -78,7 +81,7 @@ public class UserDaoTest {
         dao.get("unknown_id");
     }
 
-//    @Test
+    @Test
     public void getAll() {
         dao.deleteAll();
 
@@ -101,7 +104,7 @@ public class UserDaoTest {
         checkSameUser(user2, users3.get(2));
     }
 
-//    @Test
+    @Test
     public void getAllNoneData() {
         dao.deleteAll();
 
@@ -109,8 +112,7 @@ public class UserDaoTest {
         assertEquals(0, user0.size());
     }
 
-//    @Test(expected = DataAccessException.class)
-//    @Test
+    @Test(expected = DataAccessException.class)
     public void duplicateKey(){
         dao.deleteAll();
 
@@ -118,7 +120,7 @@ public class UserDaoTest {
         dao.add(user1);
     }
 
-//    @Test
+    @Test
     public void sqlExceptionTransfer(){
         dao.deleteAll();
 

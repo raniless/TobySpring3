@@ -31,8 +31,8 @@ import static springbook.user.service.UserServiceImpl.MIN_RECOMMEND_FOR_GOLD;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/test-applicationContext.xml")
-@Transactional
-@Commit
+//@Transactional
+//@Commit
 public class UserServiceTest {
     @Autowired
     ApplicationContext context;
@@ -231,7 +231,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @Rollback
+//    @Rollback
     public void transactionSync(){
         userService.deleteAll();
         userService.add(users.get(0));
