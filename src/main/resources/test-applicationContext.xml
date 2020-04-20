@@ -3,6 +3,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:aop="http://www.springframework.org/schema/aop"
         xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
         xmlns:tx="http://www.springframework.org/schema/tx"
         xsi:schemaLocation="http://www.springframework.org/schema/beans
                             http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
@@ -10,6 +11,8 @@
                             http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
                             http://www.springframework.org/schema/context
                             http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                            http://www.springframework.org/schema/jdbc
+                            http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
                             http://www.springframework.org/schema/tx
                             http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
@@ -65,6 +68,9 @@
         <property name="password" value="root" />
     </bean>
 
+    <jdbc:embedded-database id="embeddedDatabase" type="HSQL">
+        <jdbc:script location="classpath:schema.sql" />
+    </jdbc:embedded-database>
     <!--
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="mail.server.com" />
