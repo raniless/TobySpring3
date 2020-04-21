@@ -28,23 +28,6 @@
         <property name="sqlService" ref="sqlService" />
     </bean>
 
-    <!--
-    <bean id="sqlService" class="springbook.user.sqlservice.BaseSqlService">
-        <property name="sqlReader" ref="sqlReader" />
-        <property name="sqlRegistry" ref="sqlRegistry" />
-    </bean>
-
-    <bean id="sqlReader" class="springbook.user.sqlservice.JaxbXmlSqlReader">
-        <property name="sqlmapFile" value="sqlmap.xml" />
-    </bean>
-
-    <bean id="sqlRegistry" class="springbook.user.sqlservice.HashMapSqlRegistry" />
-    -->
-
-    <!--
-    <bean id="sqlService" class="springbook.user.sqlservice.DefaultSqlService" />
-    -->
-
     <bean id="sqlService" class="springbook.user.sqlservice.OxmSqlService">
         <property name="unmarshaller" ref="unmarshaller" />
         <property name="sqlRegistry" ref="sqlRegistry" />
@@ -55,7 +38,9 @@
         <property name="contextPath" value="springbook.user.sqlservice.jaxb"/>
     </bean>
 
-    <bean id="sqlRegistry" class="springbook.user.sqlservice.ConcurrentHashMapSqlRegistry" />
+    <bean id="sqlRegistry" class="springbook.user.sqlservice.updatable.EmbeddedDbSqlRegistry">
+        <property name="dataSource" ref="embeddedDatabase" />
+    </bean>
 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
@@ -69,66 +54,10 @@
     </bean>
 
     <jdbc:embedded-database id="embeddedDatabase" type="HSQL">
-        <jdbc:script location="classpath:schema.sql" />
+        <jdbc:script location="classpath:springbook/user/sqlservice/updatable/sqlRegistrySchema.sql" />
     </jdbc:embedded-database>
-    <!--
-    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="mail.server.com" />
-    </bean>
-    -->
 
     <bean id="mailSender" class="springbook.user.service.DummyMailSender" />
 
-    <!--
-    <bean id="transactionAdvice" class="springbook.user.service.TransactionAdvice">
-        <property name="transactionManager" ref="transactionManager" />
-    </bean>
-
-    <bean id="transactionAdvice" class="org.springframework.transaction.interceptor.TransactionInterceptor">
-        <property name="transactionManager" ref="transactionManager" />
-        <property name="transactionAttributes">
-            <props>
-                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
-                <prop key="*">PROPAGATION_REQUIRED</prop>
-            </props>
-        </property>
-    </bean>
-
-    //tx:adivice 태그에 의해 TransactionInterceptor 빈이 등록된다.
-    //transaction-manager는 bean 아이디가 transactionManager면 생략 가능
-    <tx:advice id="transactionAdvice">
-        <tx:attributes>
-            //propagation이 REQUIRED면 생략 가능
-            <tx:method name="get*" read-only="true" />
-            <tx:method name="*" />
-        </tx:attributes>
-    </tx:advice>
-    -->
-
     <tx:annotation-driven />
-
-    <context:annotation-config />
-    <!--
-    <bean id="transactionPointcut" class="org.springframework.aop.aspectj.AspectJExpressionPointcut">
-        <property name="expression" value="execution(* *..*ServiceImpl.upgrade*(..))"/>
-    </bean>
-
-    <bean id="transactionAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
-        <property name="advice" ref="transactionAdvice" />
-        <property name="pointcut" ref="transactionPointcut" />
-    </bean>
-
-    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
-    -->
-
-    <!--
-    //aop:config 태그에 의해 AspectJAdvisorAutoProxyCreator 빈이 등록된다
-    <aop:config>
-        //expression의 표현식을 프로퍼티로 가진 AspectJExpressionPointcut 빈이 등록된다.
-        <aop:pointcut id="transactionPointcut" expression="execution(* *..*ServiceImpl.upgrade*(..))"/>
-
-        //advice와 pointcut의 ref를 프로퍼티로 갖는 DefaultBeanFactoryPointcutAdvisor 빈이 등록된다.
-        <aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)" />
-    </aop:config>
-    -->
 </beans>

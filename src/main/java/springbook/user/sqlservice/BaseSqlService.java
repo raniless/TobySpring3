@@ -1,6 +1,7 @@
 package springbook.user.sqlservice;
 
 import springbook.user.exception.SqlNotFoundException;
+import springbook.user.exception.SqlRetrievalFailureException;
 
 import javax.annotation.PostConstruct;
 

@@ -1,6 +1,4 @@
-package springbook.user.sqlservice;
-
-import springbook.issuetracker.sqlservice.UpdatableSqlRegistry;
+package springbook.user.sqlservice.updatable;
 
 public class ConcurrentHashMapSqlRegistryTest extends AbstractUpdatableSqlRegistryTest {
     @Override

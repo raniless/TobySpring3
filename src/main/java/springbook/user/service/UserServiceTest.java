@@ -1,5 +1,6 @@
 package springbook.user.service;
 
+import context.TestApplicationContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +31,8 @@ import static springbook.user.service.UserServiceImpl.MIN_LOGCOUNT_FOR_SILVER;
 import static springbook.user.service.UserServiceImpl.MIN_RECOMMEND_FOR_GOLD;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/test-applicationContext.xml")
+//@ContextConfiguration(locations = "/test-applicationContext.xml")
+@ContextConfiguration(classes = TestApplicationContext.class)
 //@Transactional
 //@Commit
 public class UserServiceTest {
