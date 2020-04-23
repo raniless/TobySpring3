@@ -1,7 +1,8 @@
 package springbook.user.dao;
 
 
-import context.TestApplicationContext;
+import context.AppContext;
+import context.TestAppContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = "/test-applicationContext.xml")
-@ContextConfiguration(classes = TestApplicationContext.class)
+@ContextConfiguration(classes = {AppContext.class, TestAppContext.class})
 @Transactional
 public class UserDaoTest {
     @Autowired
