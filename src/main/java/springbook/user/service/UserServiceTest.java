@@ -1,17 +1,18 @@
 package springbook.user.service;
 
 import context.AppContext;
-import context.TestAppContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -29,8 +30,9 @@ import static springbook.user.service.UserServiceImpl.MIN_LOGCOUNT_FOR_SILVER;
 import static springbook.user.service.UserServiceImpl.MIN_RECOMMEND_FOR_GOLD;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles("test")
 //@ContextConfiguration(locations = "/test-applicationContext.xml")
-@ContextConfiguration(classes = {AppContext.class, TestAppContext.class})
+@ContextConfiguration(classes = AppContext.class)
 //@Transactional
 //@Commit
 public class UserServiceTest {
@@ -44,6 +46,8 @@ public class UserServiceTest {
     UserDao userDao;
     @Autowired
     PlatformTransactionManager transactionManager;
+    @Autowired
+    DefaultListableBeanFactory bf;
 
     List<User> users;
 
@@ -237,4 +241,13 @@ public class UserServiceTest {
         userService.add(users.get(0));
         userService.add(users.get(1));
     }
+
+
+    @Test
+    public void beans() {
+        for(String n : bf.getBeanDefinitionNames()) {
+            System.out.println(n + " \t " + bf.getBean(n).getClass().getName());
+        }
+    }
+
 }

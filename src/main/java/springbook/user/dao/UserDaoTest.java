@@ -2,7 +2,6 @@ package springbook.user.dao;
 
 
 import context.AppContext;
-import context.TestAppContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +11,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +25,9 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles("test")
 //@ContextConfiguration(locations = "/test-applicationContext.xml")
-@ContextConfiguration(classes = {AppContext.class, TestAppContext.class})
+@ContextConfiguration(classes = AppContext.class)
 @Transactional
 public class UserDaoTest {
     @Autowired
