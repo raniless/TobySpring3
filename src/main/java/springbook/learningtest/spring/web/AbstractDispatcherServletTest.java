@@ -16,7 +16,7 @@ import java.io.UnsupportedEncodingException;
 
 import static org.junit.Assert.assertEquals;
 
-public abstract class AbstractDispatcherServletTest implements AfterRunService{
+public abstract class AbstractDispatcherServletTest implements AfterRunService {
     protected MockHttpServletRequest request;
     protected MockHttpServletResponse response;
     protected MockServletConfig config = new MockServletConfig("Spring");

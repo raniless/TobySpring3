@@ -9,5 +9,7 @@
 
     <context:annotation-config />
 
+    <!--
     <bean name="/hello" class="springbook.learningtest.spring.web.hello.HelloController" />
+    -->
 </beans>

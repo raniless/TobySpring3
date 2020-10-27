@@ -10,4 +10,6 @@
     <context:annotation-config />
 
     <bean name="/hello" class="springbook.learningtest.spring.web.hello.HelloController" />
+
+    <bean id="helloPdfView" class="springbook.learningtest.spring.web.hello.HelloPdfView" />
 </beans>

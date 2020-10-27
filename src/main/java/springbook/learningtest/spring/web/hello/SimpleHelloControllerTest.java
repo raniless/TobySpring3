@@ -22,5 +22,13 @@ public class SimpleHelloControllerTest extends AbstractDispatcherServletTest {
 
         assertEquals("/WEB-INF/view/hello.jsp", mav.getViewName());
         assertEquals("Hello Spring", (String)mav.getModel().get("message"));
+
+        setRelativeLocations("spring-servlet.xml")
+            .setClasses(HelloSpring.class)
+            .initRequest(RequestMethod.GET, "/hello")
+            .addParameter("name", "Spring")
+            .runService()
+            .assertModel("message", "Hello Spring")
+            .assertViewName("/WEB-INF/view/hello.jsp");
     }
 }
