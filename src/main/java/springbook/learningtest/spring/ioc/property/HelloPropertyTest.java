@@ -3,6 +3,8 @@ package springbook.learningtest.spring.ioc.property;
 import org.junit.Test;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -38,5 +40,21 @@ public class HelloPropertyTest {
         assertEquals("Windows 10", helloProperty.getOs());
         //외부 Resource(Property)
         assertEquals("root", helloProperty.getUserName());
+    }
+
+    @Test
+    public void propertyPlaceHolderConfigurerTest() {
+        GenericXmlApplicationContext ctx = new GenericXmlApplicationContext("./springbook/learningtest/spring/ioc/property/helloContext.xml");
+        SimpleDriverDataSource dataSource = ctx.getBean("dataSource", SimpleDriverDataSource.class);
+        assertEquals("root", dataSource.getUsername());
+        assertEquals("root", dataSource.getPassword());
+    }
+
+    @Test
+    public void spELTest() {
+        GenericXmlApplicationContext ctx = new GenericXmlApplicationContext("./springbook/learningtest/spring/ioc/property/helloContext.xml");
+        SimpleDriverDataSource dataSource2 = ctx.getBean("dataSource2", SimpleDriverDataSource.class);
+        assertEquals("root", dataSource2.getUsername());
+        assertEquals("root", dataSource2.getPassword());
     }
 }
